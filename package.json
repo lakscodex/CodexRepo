@@ -1,0 +1,29 @@
+{
+  "name": "Codex",
+  "version": "1.5.14",
+  "description": "Codex SDK - Integration utilities",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "src",
+    "scripts/setup.js",
+    "scripts/postinstall.js",
+    "scripts/build.js"
+  ],
+  "bin": {
+    "Codex": "./scripts/setup.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "build": "node scripts/build.js",
+    "lint": "eslint src/**/*.js",
+    "test": "jest"
+  },
+  "license": "MIT",
+  "keywords": [
+    "utility",
+    "sdk",
+    "integration"
+  ],
+  "dependencies": {}
+}
